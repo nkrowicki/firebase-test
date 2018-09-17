@@ -8,7 +8,6 @@
   <link rel="stylesheet" href="css/invie.css" />
   <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
   <!-- <link rel="stylesheet" media="(max-width: 800px)" href="css/media-querie.css"/> -->
-
 </head>
 
 <body>
@@ -29,10 +28,11 @@
             <a href="index.html">Home</a>
           </li>
           <li>
-            <a href="#guitarras">Guitarras</a>
+            <a href="#" id="btnLogin">Iniciar sesión</a>
           </li>
           <li>
-            <a href="precios.html">Precios</a>
+            <a href="#" id="btnLogin" style="display: none">Iniciar sesión</a>
+            <a href="#" id="btnLogout" style="display: none">Cerrar sesión</a>
           </li>
         </ul>
       </nav>
@@ -87,7 +87,8 @@
       <div class="contacto">
         <img data-src="images/invie-white.png|images/invie-white2x.png" alt="logotipo blanco" />
         <a href="tel:+573024456678"><strong>Telefono</strong> <span>3024456678</span></a>
-        <a href="mailto:contacto@invie.com"><strong>E-mail</strong> <span>contacto@invie.com</span></a>
+        <a href="/cdn-cgi/l/email-protection#03606c6d776260776c436a6d756a662d606c6e"><strong>E-mail</strong> <span><span
+              class="__cf_email__" data-cfemail="b4d7dbdac0d5d7c0dbf4dddac2ddd19ad7dbd9">[email&#160;protected]</span></span></a>
       </div>
       <form class="formulario">
         <div class="col1">
@@ -126,28 +127,31 @@
       </form>
     </div>
   </footer>
+  <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/hammer.js/2.0.7/hammer.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/blazy/1.5.4/blazy.min.js"></script>
 
-  <!-- INICIO FIREBASE -->
-  <script src="https://www.gstatic.com/firebasejs/5.5.0/firebase.js"></script>
+  <!-- Aquí empieza el script de Firebase -->
+
+  <script src="https://www.gstatic.com/firebasejs/5.3.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/5.3.1/firebase-auth.js"></script>
   <script>
     // Initialize Firebase
-  //   var config = {
-  //     apiKey: "AIzaSyBzhFSsrLSfJtf_bvYr9zV2tkHb2p6e-SA",
-  //     authDomain: "platzi-invie-b5ce9.firebaseapp.com",
-  //     databaseURL: "https://platzi-invie-b5ce9.firebaseio.com",
-  //     projectId: "platzi-invie-b5ce9",
-  //     storageBucket: "platzi-invie-b5ce9.appspot.com",
-  //     messagingSenderId: "453820411978"
-  //   };
-  //   firebase.initializeApp(config);
+    var config = {
+      apiKey: "AIzaSyBzhFSsrLSfJtf_bvYr9zV2tkHb2p6e-SA",
+      authDomain: "platzi-invie-b5ce9.firebaseapp.com",
+      databaseURL: "https://platzi-invie-b5ce9.firebaseio.com",
+      projectId: "platzi-invie-b5ce9",
+      storageBucket: "platzi-invie-b5ce9.appspot.com",
+      messagingSenderId: "453820411978"
+    };
+    firebase.initializeApp(config);
   // </script>
   <!-- FIN FIREBASE -->
 
   <!-- Tiene que esta despues de firebase para poder leer el objeto de firebase -->
-  <script src="js/index.js"></script>
 
+  <script src="js/index.js"></script>
 
   <script>
     var consulta = window.matchMedia('(max-width: 500px)');
@@ -168,12 +172,12 @@
     function mediaQuery() {
       if (consulta.matches) {
         // si se cumple hagamos esto
-        console.log('se cumplió la condicion');
+        // console.log('se cumplió la condicion');
         $burguerButton.addEventListener('touchstart', toggleMenu);
       } else {
         $burguerButton.removeEventListener('touchstart', toggleMenu);
         // si no se cumple hagamos esto
-        console.log('no se cumplió la condicion');
+        // console.log('no se cumplió la condicion');
       }
     }
     mediaQuery();
