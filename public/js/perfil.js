@@ -1,53 +1,112 @@
+var ref = firebase.database().ref("usuario");
+
 var btnLogin = document.getElementById("btnLogin");
 var btnLogout = document.getElementById("btnLogout");
-var ref = firebase.database().ref("usuario44");
+
+var cancelForm = document.getElementById("cancelForm");
+
+var datosPerfil = document.getElementById('datosPerfil');
+var formularioPerfil = document.getElementById('formularioPerfil');
+
+var perfilNombre = document.getElementById('perfilNombre');
+var perfilEmail = document.getElementById('perfilEmail');
+var perfilDireccion = document.getElementById('perfilDireccion');
+var perfilTelefono = document.getElementById('perfilTelefono');
+
+var nombreForm = document.getElementById('nombreForm');
+var emailForm = document.getElementById('emailForm');
+var telefonoForm = document.getElementById('telefonoForm');
+var calleForm = document.getElementById('calleForm');
+var interiorForm = document.getElementById('interiorForm');
+var coloniaForm = document.getElementById('coloniaForm');
+var cpForm = document.getElementById('cpForm');
+
+
+var btnEditar = document.getElementById('perfilEditar');
 var usuario = {};
 
-firebase.auth().onAuthStateChanged(function(user){
-  console.log(user)
-  if (user) {
-    console.log("tenemos usuario");
-    mostrarLogout()
-  }else{
-    console.log("no tenemos usuario");
-    mostrarLogin()
-  }
-});
 
-btnLogin.addEventListener("click", function(event){
-    event.preventDefault();
-    var provider = new firebase.auth.FacebookAuthProvider();
-    provider.addScope('public_profile');
-    
-    firebase.auth().signInWithPopup(provider).then(function(datosUsuario){
-        console.log(datosUsuario);
-        usuario = {
-            nombre: datosUsuario.user.displayName,
-            email: datosUsuario.user.email,
-            uid: datosUsuario.user.uid
-        }
-        agregarUsuario(usuario);
-    }).catch(function(err){
-        console.log(err);
+
+
+function leerInformacion(uid) {
+    ref.child(uid).on('value', function (data) {
+        var dat = data.val();
+        llenarInformacion(dat.nombre, dat.email, dat.telefono, dat.direccion)
     })
+}
+
+function llenarInformacion(nombre, email, telefono, direccion) {
+    perfilNombre.innerHTML = nombre;
+    perfilEmail.innerHTML = email;
+    perfilTelefono.innerHTML = telefono;
+    perfilDireccion.innerHTML = direccion.calle + ' ' + direccion.colonia + ' ' + direccion.cp + ' ' + direccion.interior;
+}
+
+
+firebase.auth().onAuthStateChanged(function (user) {
+    console.log(user)
+    if (user) {
+        console.log("tenemos usuario");
+        mostrarLogout();
+        leerInformacion(user.uid);
+
+    } else {
+        window.location.href = 'index.html'
+        console.log("no tenemos usuario");
+        mostrarLogin()
+    }
 });
 
-btnLogout.addEventListener("click", function(event){
+btnLogout.addEventListener("click", function (event) {
     firebase.auth().signOut();
 })
 
-function mostrarLogout(){
+function mostrarLogout() {
     console.log("mostrar Logout");
     btnLogout.style.display = "block";
     btnLogin.style.display = "none";
 }
 
-function mostrarLogin(){
+function mostrarLogin() {
     console.log("mostrar login");
     btnLogout.style.display = "none";
     btnLogin.style.display = "block";
 }
 
-function agregarUsuario(usuario){
-    ref.push(usuario)
+function agregarUsuario(usuario, uid) {
+    ref.child(uid).update(usuario)
 }
+
+perfilEditar.addEventListener('click', function (e) {
+
+    datosPerfil.style = "display: none;"
+    formularioPerfil.style = "display: block;";
+});
+
+cancelForm.addEventListener('click', function (e) {
+
+    datosPerfil.style = "display: block;"
+    formularioPerfil.style = "display: none;";
+});
+
+
+formularioPerfil.addEventListener('submit', function (e) {
+    e.preventDefault();
+    var uid = firebase.auth().currentUser.uid
+
+    var obj = {
+        nombre: nombreForm.value,
+        email: emailForm.value,
+        telefono: telefonoForm.value,
+        direccion: {
+            calle: calleForm.value,
+            interior: interiorForm.value,
+            colonia: coloniaForm.value,
+            cp: cpForm.value
+        }
+    }
+    ref.child(uid).set(obj).then(function () {
+        datosPerfil.style = "display: block;"
+        formularioPerfil.style = "display: none;";
+    })
+})
