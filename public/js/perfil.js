@@ -38,8 +38,8 @@ function leerInformacion(uid) {
 function llenarInformacion(nombre, email, telefono, direccion) {
     perfilNombre.innerHTML = nombre;
     perfilEmail.innerHTML = email;
-    perfilTelefono.innerHTML = telefono;
-    perfilDireccion.innerHTML = direccion.calle + ' ' + direccion.colonia + ' ' + direccion.cp + ' ' + direccion.interior;
+    perfilTelefono.innerHTML = telefono || '';
+    perfilDireccion.innerHTML = direccion ? direccion.calle + ' ' + direccion.colonia + ' ' + direccion.cp + ' ' + direccion.interior : '';
 }
 
 
